@@ -1,2 +1,5 @@
-datas
+data
 data/1024
+node_modules/
+bun.lockb
+.idea

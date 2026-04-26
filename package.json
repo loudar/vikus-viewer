@@ -1,0 +1,20 @@
+{
+  "name": "vikus-viewer",
+  "version": "1.0.0",
+  "description": "VIKUS Viewer – web-based visualization for large cultural artifact collections",
+  "scripts": {
+    "start": "bun run server.ts",
+    "dev": "bun --watch run server.ts"
+  },
+  "dependencies": {
+    "@types/bun": "^1.3.13",
+    "d3": "3.5.12",
+    "lodash": "3.10.1",
+    "marked": "0.3.6",
+    "pixi.js": "5.2.2",
+    "vue": "2.5.11"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0"
+  }
+}
