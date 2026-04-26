@@ -1,30 +1,26 @@
+function addOrRemove(array, value) {
+    array = array.slice();
+    const index = array.indexOf(value);
+    if (index > -1) {
+        array.splice(index, 1);
+    } else {
+        array.push(value);
+    }
+    return array;
+}
+
 function Crossfilter() {
-    // multipass anyone ?
+    let options;
+    let container;
+    let filter = {};
 
-    var fontsize = d3.scale.linear().range([8, 17]);
-    var options;
-    var container;
-    var filter = {};
-    var labels = {};
-
-    var lock = false;
-    var data;
-    var sortArrays = {
+    let lock = false;
+    let data;
+    let sortArrays = {
         // columnName: ["first", "second", "third"],
     };
-    var search = "";
-    var searchedData = [];
-
-    function addOrRemove(array, value) {
-        array = array.slice();
-        var index = array.indexOf(value);
-        if (index > -1) {
-            array.splice(index, 1);
-        } else {
-            array.push(value);
-        }
-        return array;
-    }
+    let search = "";
+    let searchedData = [];
 
     function tags() {}
 
@@ -93,11 +89,6 @@ function Crossfilter() {
     };
 
     tags.updateDom = function updateDom(key, filteredData) {
-        // if (key === "vorbesitzerin") {
-        //   console.log("updateDom", key, filteredData)
-        //   fontsize.domain(d3.extent(filteredData, function (d) { return d.size; }))
-        // }
-
         if (sortArrays[key]) {
             var sorted = sortArrays[key];
             filteredData.sort(function (a, b) {
@@ -208,11 +199,7 @@ function Crossfilter() {
     tags.resize = function resize() {};
 
     tags.update = function update(tempFilter) {
-        var filters = Object.entries(tempFilter || filter); //.filter(function (d) { return d[1].length; })
-
-        // if (key) {
-        //   filters = filters.filter(function (d) { return d[0] != key; })
-        // }
+        var filters = Object.entries(tempFilter || filter);
 
         console.log("update", filters);
 
@@ -300,7 +287,7 @@ function Crossfilter() {
                         });
                     }
                     return f[1].indexOf(val) > -1;
-                }).length == filters.length && searched;
+                }).length === filters.length && searched;
 
             if (searched) {
                 searchedData.push(d);
@@ -313,7 +300,9 @@ function Crossfilter() {
             }
         });
         canvas.highlight();
-        if (!highlight) canvas.project();
+        if (!highlight) {
+            canvas.project();
+        }
     };
 
     tags.search = function (query) {

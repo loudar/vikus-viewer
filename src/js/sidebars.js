@@ -17,8 +17,7 @@ const mountApps = () => {
         // Clone the content to use as template before mounting
         const detailTemplate = detailEl.innerHTML;
 
-        const detailApp = createApp();
-        const detailComponent = {
+        const detailApp = createApp({
             template: detailTemplate,
             data() {
                 return {
@@ -33,9 +32,11 @@ const mountApps = () => {
                     canvas.changePage(this.id, page);
                 },
                 hasData(entry) {
+                    if (!entry) return false;
                     return this.getContent(entry) !== "";
                 },
                 getContent(entry) {
+                    if (!entry || !this.item) return "";
                     if (entry.type === "text") {
                         return this.item[entry.source];
                     }
@@ -53,17 +54,18 @@ const mountApps = () => {
                         return "";
                     }
                     if (entry.type === "function") {
-                        const column = this.item;
                         const func = entry.source;
                         try {
+                            const item = this.item;
                             return eval(func);
                         } catch (e) {
                             return "Error";
                         }
                     }
+                    return "";
                 },
             },
-        };
+        });
 
         console.log("Mounting detailApp to #detail");
         // Using a timeout to ensure DOM is settled
@@ -100,8 +102,7 @@ const mountApps = () => {
 
     if (infoEl) {
         const infoTemplate = infoEl.innerHTML;
-        const infoApp = createApp();
-        const infoComponent = {
+        const infoApp = createApp({
             template: infoTemplate,
             data() {
                 return {
@@ -116,14 +117,14 @@ const mountApps = () => {
                     return "";
                 },
             },
-        };
+        });
 
         const mountInfo = (retries = 5) => {
             setTimeout(() => {
                 try {
                     const el = document.querySelector("#infobar");
                     if (el) {
-                        window.infoVue = infoApp.mount(infoComponent, "#infobar");
+                        window.infoVue = infoApp.mount("#infobar");
                         if (window.pendingInfoText) {
                             window.infoVue.info = window.pendingInfoText;
                             delete window.pendingInfoText;

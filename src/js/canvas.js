@@ -17,7 +17,6 @@ function Canvas() {
     let scale1 = 1;
     let scale2 = 1;
     let scale3 = 1;
-    let allData = [];
 
     let translate = [0, 0];
     let scale = 1;
@@ -96,7 +95,7 @@ function Canvas() {
     let zooming = false;
     const detailContainer = d3.select(".sidebar");
     let timelineData;
-    let stage, stage1, stage2, stage3, stage4, stage5;
+    let stage, stage2, stage3, stage4, stage5;
     let timelineHover = false;
     const tsneIndex = {};
     const tsneScale = {};
@@ -260,10 +259,6 @@ function Canvas() {
         data.forEach(function (d) {
             var px = d.x1 / scale1;
             var py = d.y1 / scale1;
-            // var px = d.sprite.position.x / scale1;
-            // var py = d.sprite.position.y / scale1;
-            var halfW = d.sprite.width / scale1 / 2;
-            var halfH = d.sprite.height / scale1 / 2;
 
             halfH = 0;
             halfW = 0;
@@ -576,7 +571,7 @@ function Canvas() {
         //canvas.makeScales();
 
         // add preview pics
-        data.forEach(function (d, i) {
+        data.forEach(function (d) {
             var sprite = new PIXI.Sprite(PIXI.Texture.WHITE);
 
             sprite.anchor.x = 0.5;
@@ -794,7 +789,7 @@ function Canvas() {
         });
     };
 
-    function mousemove(d) {
+    function mousemove() {
         if (timelineHover) return;
 
         const mouse = d3.mouse(vizContainer.node());
@@ -1026,7 +1021,7 @@ function Canvas() {
         return state.mode;
     };
 
-    function animate(time) {
+    function animate() {
         requestAnimationFrame(animate);
         loadImages();
         if (sleep) return;
@@ -1259,33 +1254,11 @@ function Canvas() {
         sleep = false;
     }
 
-    function zoomstart(d) {
+    function zoomstart() {
         zooming = true;
         startTranslate = false;
         drag = false;
         startScale = scale;
-    }
-
-    function createRect(x, y, width, height, color, alpha, targetStage) {
-        const graphics = new PIXI.Graphics();
-
-        // Set fill properties
-        graphics.beginFill(color || 0xffffff, alpha || 1);
-
-        // Draw rectangle
-        graphics.drawRect(x, y, width, height);
-
-        // End fill
-        graphics.endFill();
-
-        // Add to target stage (defaulting to stage2 if none specified)
-        (targetStage || stage2).addChild(graphics);
-
-        // Wake up the renderer
-        sleep = false;
-
-        // Return the created graphics object
-        return graphics;
     }
 
     function toScreenPoint(p) {
@@ -1464,7 +1437,7 @@ function Canvas() {
     };
 
     canvas.highlight = function () {
-        data.forEach(function (d, i) {
+        data.forEach((d) => {
             d.alpha = d.highlight ? 1 : 0.2;
         });
         canvas.wakeup();
@@ -1521,7 +1494,6 @@ function Canvas() {
         });
 
         active.forEach(function (d) {
-            var factor = height / 2;
             var tsneEntry = tsneIndex[state.mode.title][d.id];
             if (tsneEntry) {
                 d.x = tsneEntry[0] * dimension + width / 2 - dimension / 2 + margin.left;
@@ -1595,23 +1567,17 @@ function Canvas() {
         const zoomScale = scale;
         if (zoomedToImage) return;
 
-        data.forEach(function (d, i) {
+        data.forEach(function (d) {
             var p = d.sprite.position;
 
             var x = p.x / scale1 + translate[0] / zoomScale;
             var y = p.y / scale1 + translate[1] / zoomScale;
             var padding = 2;
 
-            if (
-                x > -padding &&
+            d.visible = x > -padding &&
                 x < width / zoomScale + padding &&
                 y + height < height / zoomScale + padding &&
-                y > height * -1 - padding
-            ) {
-                d.visible = true;
-            } else {
-                d.visible = false;
-            }
+                y > height * -1 - padding;
         });
 
         var visible = data.filter(function (d) {
@@ -1636,7 +1602,7 @@ function Canvas() {
             d.alpha2 = 1;
             return;
         }
-        let url = "";
+        let url;
         if (config.loader.textures.detail.csv) {
             url = d[config.loader.textures.detail.csv];
         } else {
@@ -1676,7 +1642,7 @@ function Canvas() {
 
         state.lastZoomed = d.id;
         const page = d.page ? "_" + d.page : "";
-        let url = "";
+        let url;
         if (config.loader.textures.big.csv) {
             url = d[config.loader.textures.big.csv];
         } else {
@@ -1685,7 +1651,6 @@ function Canvas() {
 
         const texture = new PIXI.Texture.from(url);
         const sprite = new PIXI.Sprite(texture);
-        const res = config.loader.textures.big.size;
 
         const updateSize = function (t) {
             var size = Math.max(texture.width, texture.height);

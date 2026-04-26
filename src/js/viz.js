@@ -26,10 +26,6 @@
 //       '---" '---'   |   | ,'       \   \ ;    |   | ,'  |   |.'
 //                     `----'          '---"     `----'    `---'
 
-// christopher pietsch
-// @chrispiecom
-// 2015-2018
-
 utils.welcome();
 
 let data;

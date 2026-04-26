@@ -98,36 +98,36 @@
                                     </span>
                                 </div>
                             </div>
-                            <div
-                                v-for="entry in structure"
-                                v-bind:key="entry.name"
-                                v-bind:class="entry.display"
-                                class="entry"
-                                v-if="hasData(entry)"
-                            >
-                                <div v-if="entry.name" class="label">{{ entry.name }}</div>
-                                <div class="content">
-                                    <span v-if="entry.type === 'keywords'">
-                                        <span
-                                            v-for="keyword in item[entry.source]"
-                                            v-bind:key="keyword"
-                                            class="keyword"
-                                        >
-                                            {{ keyword }}
+                            <template v-for="entry in structure" v-bind:key="entry.name">
+                                <div
+                                    v-if="hasData(entry)"
+                                    v-bind:class="entry.display"
+                                    class="entry"
+                                >
+                                    <div v-if="entry.name" class="label">{{ entry.name }}</div>
+                                    <div class="content">
+                                        <span v-if="entry.type === 'keywords'">
+                                            <span
+                                                v-for="keyword in item[entry.source]"
+                                                v-bind:key="keyword"
+                                                class="keyword"
+                                            >
+                                                {{ keyword }}
+                                            </span>
                                         </span>
-                                    </span>
-                                    <span v-else-if="entry.type === 'link'">
-                                        <a :href="item[entry.source]" target="_blank">Link</a>
-                                    </span>
-                                    <span v-else-if="entry.type === 'markdown'">
-                                        <span v-html="getContent(entry)"></span>
-                                    </span>
-                                    <span v-else-if="entry.type === 'function'">
-                                        <span v-html="getContent(entry)"></span>
-                                    </span>
-                                    <span v-else> {{ getContent(entry) }} </span>
+                                        <span v-else-if="entry.type === 'link'">
+                                            <a :href="item[entry.source]" target="_blank">Link</a>
+                                        </span>
+                                        <span v-else-if="entry.type === 'markdown'">
+                                            <span v-html="getContent(entry)"></span>
+                                        </span>
+                                        <span v-else-if="entry.type === 'function'">
+                                            <span v-html="getContent(entry)"></span>
+                                        </span>
+                                        <span v-else> {{ getContent(entry) }} </span>
+                                    </div>
                                 </div>
-                            </div>
+                            </template>
                         </div>
                     </div>
                 </div>
