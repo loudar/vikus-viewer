@@ -6,6 +6,11 @@
     "start": "bun run server.ts",
     "dev": "bun --watch run server.ts"
   },
+  "author": {
+    "email": "cpietsch@gmail.com",
+    "name": "Christopher Pietsch",
+    "url": "https://x.com/chrispiecom"
+  },
   "dependencies": {
     "@types/bun": "^1.3.13",
     "d3": "3.5.12",

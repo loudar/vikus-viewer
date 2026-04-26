@@ -1,9 +1,3 @@
-// copyright christopher pietsch
-// cpietsch@gmail.com
-// @chrispiecom
-// 2015-2018
-
-
 window.utils = { config: {} };
 
 utils.setMode = function (mode) {

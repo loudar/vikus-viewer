@@ -1,8 +1,3 @@
-// christopher pietsch
-// cpietsch@gmail.com
-// 2015-2018
-
-
 function Tags() {
   var margin = {top: 10, right: 20, bottom: 20, left: 10},
       width = window.innerWidth - margin.left - margin.right,

@@ -1,9 +1,4 @@
-// christopher pietsch
-// cpietsch@gmail.com
-// tweet me @chrispiecom
-// 2015-2016
-
-// need to refactor & clean this
+// todo: need to refactor & clean this
 
 function Loader(url) {
   var progress = 0,

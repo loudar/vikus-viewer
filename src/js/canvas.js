@@ -1,7 +1,3 @@
-// christopher pietsch
-// cpietsch@gmail.com
-// 2015-2018
-
 function Canvas() {
   var margin = {
     top: 0,
