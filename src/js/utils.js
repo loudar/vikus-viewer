@@ -56,7 +56,8 @@ utils.initConfig = function (config) {
 			if (window.infoVue) {
 				window.infoVue.info = text
 			} else {
-				console.warn("infoVue not yet initialized")
+				console.warn("infoVue not yet initialized, caching info text")
+				window.pendingInfoText = text
 			}
 		}
 	})

@@ -1163,6 +1163,12 @@ function Canvas() {
       detailVue.id = d.id;
       detailVue.page = d.page;
       detailVue.item = detailData;
+    } else {
+      window.pendingDetailData = {
+        id: d.id,
+        page: d.page,
+        item: detailData
+      };
     }
   }
 

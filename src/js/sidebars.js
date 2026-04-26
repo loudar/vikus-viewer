@@ -74,6 +74,12 @@ const mountApps = () => {
                     if (el) {
                         window.detailVue = detailApp.mount(detailComponent, '#detail');
                         console.log('detailApp mounted successfully');
+                        if (window.pendingDetailData) {
+                            window.detailVue.id = window.pendingDetailData.id;
+                            window.detailVue.page = window.pendingDetailData.page;
+                            window.detailVue.item = window.pendingDetailData.item;
+                            delete window.pendingDetailData;
+                        }
                     } else if (retries > 0) {
                         console.warn('#detail not found, retrying...', retries);
                         mountDetail(retries - 1);
@@ -118,6 +124,10 @@ const mountApps = () => {
                     const el = document.querySelector('#infobar');
                     if (el) {
                         window.infoVue = infoApp.mount(infoComponent, '#infobar');
+                        if (window.pendingInfoText) {
+                            window.infoVue.info = window.pendingInfoText;
+                            delete window.pendingInfoText;
+                        }
                     } else if (retries > 0) {
                         mountInfo(retries - 1);
                     }
