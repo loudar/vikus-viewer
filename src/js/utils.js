@@ -52,7 +52,13 @@ utils.initConfig = function (config) {
 
 	// load infosidebar info.md
 	d3.text(utils.makeUrl(config.baseUrl.path, config.loader.info), function (error, text) {
-		if (text) infoVue.info = text
+		if (text) {
+			if (window.infoVue) {
+				window.infoVue.info = text
+			} else {
+				console.warn("infoVue not yet initialized")
+			}
+		}
 	})
 
 	// set window title

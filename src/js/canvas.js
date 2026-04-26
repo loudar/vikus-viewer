@@ -534,7 +534,16 @@ function Canvas() {
     timelineData = _timeline;
 
     container = d3.select(".page").append("div").classed("viz", true);
-    detailVue._data.structure = config.detail.structure;
+    
+    const updateDetailStructure = () => {
+        if (window.detailVue) {
+            detailVue.structure = config.detail.structure;
+        } else {
+            // If not yet mounted, retry shortly
+            setTimeout(updateDetailStructure, 50);
+        }
+    };
+    updateDetailStructure();
 
     columns = config.projection.columns;
     imageSize = config.loader.textures.medium.size;
@@ -1145,15 +1154,16 @@ function Canvas() {
     })
     // console.log("showDetail", detailData)
 
-    // detailVue._data.structure = activeFields;
 
     detailData["_id"] = selectedImage.id;
     detailData["_keywords"] = selectedImage.keywords || "None";
     detailData["_year"] = selectedImage.year;
     detailData["_imagenum"] = selectedImage.imagenum || 1;
-    detailVue.id = d.id;
-    detailVue.page = d.page;
-    detailVue.item = detailData;
+    if (window.detailVue) {
+      detailVue.id = d.id;
+      detailVue.page = d.page;
+      detailVue.item = detailData;
+    }
   }
 
   canvas.showDetail = showDetail;
@@ -1161,7 +1171,9 @@ function Canvas() {
   canvas.changePage = function (id, page) {
     utils.log("changePage", id, page, selectedImage);
     selectedImage.page = page;
-    detailVue._data.page = page;
+    if (window.detailVue) {
+      detailVue.page = page;
+    }
     clearBigImages();
     loadBigImage(selectedImage);
   };
