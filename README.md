@@ -9,14 +9,16 @@
 This repo contains the HTML, CSS and JS of the VIKUS Viewer software. To get started you will have to clone this repo and run a webserver. We recommend nginx for production, but any web server should work. VIKUS Viewer is a static web app that requires no server-side logic ensuring long-term availability. To minimize the loading time your web server should make use of GZIP compression on JS and CSV files. Also enable HTTP/2, since multiplexing significantly helps with loading image assets.
 
 ### IIIF
+
 VIKUS Viewer can be used with IIIF Collections through the [vikus-IIIF-generator](https://github.com/cpietsch/vikus-IIIF-generator).
 
 ### Metadata
 
-To use the VIKUS Viewer for a custom image collection, you need to prepare metadata files that describe the collection and objects, and configure the visualization. To get started, you first need to create a ```/data``` folder which will contain all metadata and image files. Have a look at the metadata generated for the [Van Gogh collection](https://github.com/cpietsch/vikus-viewer-data/tree/master/vangogh) (Van Gogh Museum) as a reference for the following descriptions.
+To use the VIKUS Viewer for a custom image collection, you need to prepare metadata files that describe the collection and objects, and configure the visualization. To get started, you first need to create a `/data` folder which will contain all metadata and image files. Have a look at the metadata generated for the [Van Gogh collection](https://github.com/cpietsch/vikus-viewer-data/tree/master/vangogh) (Van Gogh Museum) as a reference for the following descriptions.
 
 #### Remote Version
-You can use the latest version deployed on GitHub Pages (main branch) with your remote or local config / data using the `config`  parameter:
+
+You can use the latest version deployed on GitHub Pages (main branch) with your remote or local config / data using the `config` parameter:
 `https://cpietsch.github.io/vikus-viewer/?config=https://vikusviewer.fh-potsdam.de/fw4/vis/data/config.json`
 
 #### [config.json](https://github.com/cpietsch/vikus-viewer-data/blob/master/vangogh/config.json)
@@ -25,51 +27,51 @@ This is the configuration file that defines the project name, data URLs, columns
 
 The **detail.structure** in config.json defines the structure of the detail view. If there is no data for a field, it will not be displayed.
 You can use the following types in combination with the metadata fields from data.csv. defined in `source`:
+
 - `text`: renders simple text
 - `markdown`: renders markdown
 - `keywords`: renders an array
 - `link`: renders a hyperlink
-- `function`: a custom function that can be defined in the `source` field. Example: "column._width + 'mm * ' + column._height + 'mm'"
+- `function`: a custom function that can be defined in the `source` field. Example: "column.\_width + 'mm \* ' + column.\_height + 'mm'"
 
 You can choose `display` to define the display of the field. Possible values are: `column` and `wide`.
 
 Additional top-level options in config.json:
+
 - `searchEnabled`: set to `false` to hide the search bar (default: `true`)
 - `delimiter`: custom delimiter used to split the `keywords` field in data.csv (default: `","`)
 - `sortKeywords`: controls the sort order of the keyword tag cloud. Possible values:
-  - `"alphabetical"` (default) – sort A–Z
-  - `"alphabetical-reverse"` – sort Z–A
-  - `"count"` – sort by number of items descending
-  - `"count-reverse"` – sort by number of items ascending
-  - an array of keyword strings – display keywords in the given custom order
-
+    - `"alphabetical"` (default) – sort A–Z
+    - `"alphabetical-reverse"` – sort Z–A
+    - `"count"` – sort by number of items descending
+    - `"count-reverse"` – sort by number of items ascending
+    - an array of keyword strings – display keywords in the given custom order
 
 #### [data.csv](https://github.com/cpietsch/vikus-viewer-data/blob/master/vangogh/data.csv)
 
 The data.csv holds all the metadata information for each object in the collection. The following fields are mandatory: `id`, `keywords`, `year`.
+
 - `id` is linked to the name of the corresponding image. (id: 123 -> 123.jpg)
 - `keywords` comma-separated list of keywords for the tags on the top
 - `year` can be a number or a string, will be sorted ascending
 - `_fields` these are custom metadata fields (note the prefixed underscore)
 
-
 #### [timeline.csv](https://github.com/cpietsch/vikus-viewer-data/blob/master/vangogh/timeline.csv)
 
 The timeline.csv holds the information for the timeline displayed underneath the years.
+
 - `year` can be a number or a string, is linked to the `year` field in data.csv
 - `title` the headline of the blurb
 - `text` first detail text when zoomed in a little bit
 - `extra` additional text when zoomed to the maximum
 
-
 #### [info.md](https://github.com/cpietsch/vikus-viewer-data/blob/master/vangogh/info.md)
 
 This is the information displayed on the left side when opening the visualization. You can put in any kind of [Markdown](https://marked.js.org/).
 
-
 ### Images
 
-Apart from the metadata, you need to preprocess the image files, i.e., to generate sprites and textures for the different zoom levels. Please see the  [vikus-viewer-script](https://github.com/cpietsch/vikus-viewer-script) for the details. After running the script you can place the resulting folders into ```/data``` or any other location. Make sure that the texture URLs in the config.json point to these folders.
+Apart from the metadata, you need to preprocess the image files, i.e., to generate sprites and textures for the different zoom levels. Please see the [vikus-viewer-script](https://github.com/cpietsch/vikus-viewer-script) for the details. After running the script you can place the resulting folders into `/data` or any other location. Make sure that the texture URLs in the config.json point to these folders.
 
 ### Similarity (t-SNE/UMAP)
 
@@ -83,25 +85,31 @@ You can add layouts or remove the time layout in the `loader.layouts` section of
 There are two layout types:
 
 **Group layout** – groups items by a metadata column (e.g. year):
+
 ```json
 { "title": "Time", "type": "group", "groupKey": "year", "columns": 4 }
 ```
+
 - `groupKey` – the column from data.csv to group by (e.g. `"year"`, `"_medium"`)
 - `columns` – number of columns per group (optional)
 
 **CSV layout** – positions items using x/y coordinates from a CSV file. Each row must contain an `id` column plus `x` and `y` coordinates:
+
 ```json
 { "title": "Similarity", "url": "tsne.csv", "scale": 0.8 }
 ```
+
 - `url` – path to the CSV file (relative to the data folder or absolute)
 - `scale` – optional multiplier to manually scale the spread of the layout
 
 You can also add a visual spacer between navigation buttons:
+
 ```json
 { "space": true }
 ```
 
 Example `loader.layouts` with multiple views:
+
 ```json
 "layouts": [
   { "title": "Time", "type": "group", "groupKey": "year" },
@@ -115,19 +123,25 @@ Example `loader.layouts` with multiple views:
 VIKUS Viewer supports three filter modes, configured via the `filter` key in config.json.
 
 #### Default (keyword tag cloud)
+
 When no `filter` key is set, items are filtered using a tag cloud of keywords from the `keywords` column in data.csv. Clicking a tag highlights matching items; clicking multiple tags narrows down to items matching all selected tags. Use the `sortKeywords` config option to control tag ordering.
 
 #### Hierarchical keywords
+
 Activate hierarchical keyword filtering by adding the following to config.json:
+
 ```json
 "filter": {
   "type": "hierarchical"
 }
 ```
+
 Keywords in data.csv must use a colon-separated hierarchy, e.g. `Animals:Mammals:Dog`. The viewer will display top-level categories first and reveal subcategories as the user drills down. Example: [kunst-im-oeffentlichen-raum-pankow](https://vikus.kunst-im-oeffentlichen-raum-pankow.de).
 
 #### Crossfilter
+
 Crossfilter replaces the keyword bar with a panel of independent filter dimensions, each mapped to a metadata column. Selecting a value in one dimension updates the counts in all other dimensions (faceted search). Add the following to config.json:
+
 ```json
 "filter": {
   "type": "crossfilter",
@@ -137,22 +151,25 @@ Crossfilter replaces the keyword bar with a panel of independent filter dimensio
   ]
 }
 ```
+
 - `dimensions` – array of filter dimensions. Each entry has:
-  - `label` – display name shown above the filter column
-  - `source` – column name from data.csv to filter on
+    - `label` – display name shown above the filter column
+    - `source` – column name from data.csv to filter on
 
 The crossfilter panel can be styled via CSS by targeting the `.crossfilter` class.
-
 
 ### Annotations
 
 VIKUS Viewer supports basic annotation features to enable visual communication with cultural collections. The following tools are available on desktop browsers and work directly on the VIKUS Viewer canvas:
 
 #### Highlighting Objects
+
 Hold **Shift** and click on any item to highlight it. You can select multiple items in sequence to draw attention to specific objects. While holding Shift, the cursor changes to an arrow with a plus sign, indicating highlight mode.
 
-#### Freehand Drawing 
+#### Freehand Drawing
+
 Create simple, zoomable vector paths directly on the canvas:
+
 - Hold **Command** (Mac) / **Ctrl** (Win) and click anywhere to add a new segment to the current path. The cursor becomes a crosshair for precise placement.
 - Hold **Command + Option** (Mac) / **Ctrl + Alt** (Win) and click to start a new path. The cursor turns into an outlined plus sign (cell cursor), indicating the start of a new annotation.
 
@@ -162,29 +179,30 @@ The URL hash encodes the full viewer state so that specific views can be shared 
 
 The following parameters are stored in the URL hash:
 
-| Parameter | Description |
-|-----------|-------------|
+| Parameter | Description                                                                      |
+| --------- | -------------------------------------------------------------------------------- |
 | `filter`  | Comma-separated list of active keyword filters, e.g. `filter=Landscape,Portrait` |
-| `search`  | Active search query, e.g. `search=van+gogh` |
-| `mode`    | Active layout title, e.g. `mode=Similarity` |
-| `ids`     | Comma-separated list of highlighted item IDs, e.g. `ids=123,456` |
+| `search`  | Active search query, e.g. `search=van+gogh`                                      |
+| `mode`    | Active layout title, e.g. `mode=Similarity`                                      |
+| `ids`     | Comma-separated list of highlighted item IDs, e.g. `ids=123,456`                 |
 
 In addition, the following **query-string** parameter (not hash) controls the data source:
 
-| Parameter | Description |
-|-----------|-------------|
-| `config`  | URL to a remote config.json, e.g. `?config=https://example.com/data/config.json` |
+| Parameter | Description                                                                                               |
+| --------- | --------------------------------------------------------------------------------------------------------- |
+| `config`  | URL to a remote config.json, e.g. `?config=https://example.com/data/config.json`                          |
 | `ui`      | Set to `0` to hide all UI elements (search bar, navigation, info panel) for clean embedding, e.g. `?ui=0` |
 
 To enable embedding via `<iframe>`, make sure the server hosting your VIKUS Viewer instance is configured with an appropriate `Content-Security-Policy` header.
 
 ## Credits
 
-VIKUS Viewer was designed and developed by Christopher Pietsch. 
-The VIKUS Viewer software is based on the visualization code behind [Past Visions](https://github.com/cpietsch/fw4), a collaborative effort by Katrin Glinka, Christopher Pietsch, and Marian Dörk carried out at the University of Applied Sciences Potsdam in the context of the Urban Complexity Lab during the research project VIKUS (2014-2017). Related Paper: [Past Visions and Reconciling Views]( http://www.digitalhumanities.org/dhq/vol/11/2/000290/000290.html). 
+VIKUS Viewer was designed and developed by Christopher Pietsch.
+The VIKUS Viewer software is based on the visualization code behind [Past Visions](https://github.com/cpietsch/fw4), a collaborative effort by Katrin Glinka, Christopher Pietsch, and Marian Dörk carried out at the University of Applied Sciences Potsdam in the context of the Urban Complexity Lab during the research project VIKUS (2014-2017). Related Paper: [Past Visions and Reconciling Views](http://www.digitalhumanities.org/dhq/vol/11/2/000290/000290.html).
 The T-SNE view has been implemented for the [Sphaera project](https://sphaera.mpiwg-berlin.mpg.de/) with funding from [Chronoi-REM](https://www.berliner-antike-kolleg.org/rem)
 
 ### Libraries
+
 - [pixi.js](https://github.com/pixijs/pixi.js)
 - [d3.js](https://github.com/d3/d3)
 

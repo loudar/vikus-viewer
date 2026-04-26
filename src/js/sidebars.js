@@ -1,6 +1,6 @@
 const mountApps = () => {
-    if (typeof Vue === 'undefined') {
-        console.error('Vue is not defined. Make sure vue.js is loaded before sidebars.js');
+    if (typeof Vue === "undefined") {
+        console.error("Vue is not defined. Make sure vue.js is loaded before sidebars.js");
         return;
     }
 
@@ -8,15 +8,15 @@ const mountApps = () => {
         return;
     }
 
-    const {createApp} = Vue;
+    const { createApp } = Vue;
 
-    const detailEl = document.querySelector('#detail');
-    const infoEl = document.querySelector('#infobar');
+    const detailEl = document.querySelector("#detail");
+    const infoEl = document.querySelector("#infobar");
 
     if (detailEl) {
         // Clone the content to use as template before mounting
         const detailTemplate = detailEl.innerHTML;
-        
+
         const detailApp = createApp();
         const detailComponent = {
             template: detailTemplate,
@@ -25,7 +25,7 @@ const mountApps = () => {
                     item: null,
                     structure: null,
                     page: 0,
-                    id: null
+                    id: null,
                 };
             },
             methods: {
@@ -33,47 +33,47 @@ const mountApps = () => {
                     canvas.changePage(this.id, page);
                 },
                 hasData(entry) {
-                    return this.getContent(entry) !== '';
+                    return this.getContent(entry) !== "";
                 },
                 getContent(entry) {
-                    if (entry.type === 'text') {
+                    if (entry.type === "text") {
                         return this.item[entry.source];
                     }
-                    if (entry.type === 'array') {
-                        return this.item[entry.source].join(', ');
+                    if (entry.type === "array") {
+                        return this.item[entry.source].join(", ");
                     }
-                    if (entry.type === 'keywords') {
-                        return this.item[entry.source].join(', ');
+                    if (entry.type === "keywords") {
+                        return this.item[entry.source].join(", ");
                     }
-                    if (entry.type === 'markdown') {
+                    if (entry.type === "markdown") {
                         const markdown = this.item[entry.source];
                         if (markdown) {
-                            return marked.parse(markdown, {breaks: true});
+                            return marked.parse(markdown, { breaks: true });
                         }
-                        return '';
+                        return "";
                     }
-                    if (entry.type === 'function') {
+                    if (entry.type === "function") {
                         const column = this.item;
                         const func = entry.source;
                         try {
                             return eval(func);
                         } catch (e) {
-                            return 'Error';
+                            return "Error";
                         }
                     }
-                }
-            }
+                },
+            },
         };
 
-        console.log('Mounting detailApp to #detail');
+        console.log("Mounting detailApp to #detail");
         // Using a timeout to ensure DOM is settled
         const mountDetail = (retries = 5) => {
             setTimeout(() => {
                 try {
-                    const el = document.querySelector('#detail');
+                    const el = document.querySelector("#detail");
                     if (el) {
-                        window.detailVue = detailApp.mount(detailComponent, '#detail');
-                        console.log('detailApp mounted successfully');
+                        window.detailVue = detailApp.mount(detailComponent, "#detail");
+                        console.log("detailApp mounted successfully");
                         if (window.pendingDetailData) {
                             window.detailVue.id = window.pendingDetailData.id;
                             window.detailVue.page = window.pendingDetailData.page;
@@ -81,15 +81,15 @@ const mountApps = () => {
                             delete window.pendingDetailData;
                         }
                     } else if (retries > 0) {
-                        console.warn('#detail not found, retrying...', retries);
+                        console.warn("#detail not found, retrying...", retries);
                         mountDetail(retries - 1);
                     } else {
-                        console.error('#detail not found after retries');
+                        console.error("#detail not found after retries");
                     }
                 } catch (e) {
-                    console.error('Error during detailApp.mount:', e);
+                    console.error("Error during detailApp.mount:", e);
                     if (retries > 0) {
-                        console.warn('Retrying mount due to error...', retries);
+                        console.warn("Retrying mount due to error...", retries);
                         mountDetail(retries - 1);
                     }
                 }
@@ -105,7 +105,7 @@ const mountApps = () => {
             template: infoTemplate,
             data() {
                 return {
-                    info: ""
+                    info: "",
                 };
             },
             methods: {
@@ -113,17 +113,17 @@ const mountApps = () => {
                     if (input) {
                         return marked.parse(input);
                     }
-                    return '';
-                }
-            }
+                    return "";
+                },
+            },
         };
 
         const mountInfo = (retries = 5) => {
             setTimeout(() => {
                 try {
-                    const el = document.querySelector('#infobar');
+                    const el = document.querySelector("#infobar");
                     if (el) {
-                        window.infoVue = infoApp.mount(infoComponent, '#infobar');
+                        window.infoVue = infoApp.mount(infoComponent, "#infobar");
                         if (window.pendingInfoText) {
                             window.infoVue.info = window.pendingInfoText;
                             delete window.pendingInfoText;
@@ -132,7 +132,7 @@ const mountApps = () => {
                         mountInfo(retries - 1);
                     }
                 } catch (e) {
-                    console.error('Error during infoApp.mount:', e);
+                    console.error("Error during infoApp.mount:", e);
                     if (retries > 0) mountInfo(retries - 1);
                 }
             }, 100);
@@ -141,8 +141,8 @@ const mountApps = () => {
     }
 };
 
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', mountApps);
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", mountApps);
 } else {
     mountApps();
 }

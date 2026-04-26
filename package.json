@@ -1,25 +1,34 @@
 {
-  "name": "vikus-viewer",
-  "version": "2.0.0",
-  "description": "VIKUS Viewer – web-based visualization for large cultural artifact collections",
-  "scripts": {
-    "start": "bun run server.ts",
-    "dev": "bun --watch run server.ts"
-  },
-  "author": {
-    "email": "cpietsch@gmail.com",
-    "name": "Christopher Pietsch",
-    "url": "https://x.com/chrispiecom"
-  },
-  "dependencies": {
-    "@types/bun": "^1.3.13",
-    "d3": "3.5.12",
-    "lodash": "4.18.0",
-    "marked": "4.0.10",
-    "pixi.js": "5.2.2",
-    "vue": "3.0.0-alpha.0"
-  },
-  "devDependencies": {
-    "@types/node": "^25.6.0"
-  }
+    "name": "vikus-viewer",
+    "version": "2.0.0",
+    "type": "module",
+    "description": "VIKUS Viewer – web-based visualization for large cultural artifact collections",
+    "scripts": {
+        "start": "bun run server.ts",
+        "dev": "bun --watch run server.ts",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write ."
+    },
+    "author": {
+        "email": "cpietsch@gmail.com",
+        "name": "Christopher Pietsch",
+        "url": "https://x.com/chrispiecom"
+    },
+    "dependencies": {
+        "@types/bun": "^1.3.13",
+        "d3": "3.5.12",
+        "lodash": "4.18.0",
+        "marked": "4.0.10",
+        "pixi.js": "5.2.2",
+        "vue": "3.0.0-alpha.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@types/node": "^25.6.0",
+        "eslint": "^10.2.1",
+        "eslint-config-prettier": "^10.1.8",
+        "globals": "^17.5.0",
+        "prettier": "^3.8.3"
+    }
 }

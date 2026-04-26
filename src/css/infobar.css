@@ -39,7 +39,7 @@
     padding: 7px;
     float: left;
     /* border-right: 1px solid rgba(255, 255, 255, 0.78); */
-    color: #FFF;
+    color: #fff;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 13px;
@@ -126,7 +126,7 @@
     background: rgba(53, 54, 54, 0.65);
     cursor: pointer;
     font-weight: bold;
-    color: #A2A2A2;
+    color: #a2a2a2;
     margin-bottom: 5px;
 }
 
@@ -170,7 +170,7 @@
     float: left;
     height: 100%;
     overflow-y: auto;
-    direction: rtl
+    direction: rtl;
 }
 
 .infobar .outer::-webkit-scrollbar * {
@@ -187,7 +187,7 @@
     /*direction: ltr;*/
 }
 
-.infobar .inner>div {
+.infobar .inner > div {
     /* height: 100%; */
     position: relative;
     /*width: 360px;*/
@@ -235,7 +235,7 @@
     text-transform: uppercase;
     font-style: normal;
     font-weight: bold;
-    color: #FFF;
+    color: #fff;
     font-size: 0.94em;
 }
 

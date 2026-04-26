@@ -19,7 +19,6 @@
     transform-origin: left top;
 }
 
-
 .timeline2 .container {
     width: 20px;
     text-rendering: optimizeSpeed;
@@ -64,19 +63,19 @@
     /* overflow: hidden; */
     position: relative;
     transform-origin: left top;
-    background: #E5E3D2;
+    background: #e5e3d2;
     color: #000;
     float: left;
 }
 
 .timeline2 .entries {
-	float: left;
-	width: 100%;
-	/* float: left; */
-	/* top: 0px; */
-	position: relative;
-	transform-origin: left top;
-	/* top: 10px; */
+    float: left;
+    width: 100%;
+    /* float: left; */
+    /* top: 0px; */
+    position: relative;
+    transform-origin: left top;
+    /* top: 10px; */
 }
 
 .timeline2 .title {
@@ -93,30 +92,30 @@
 }
 
 .timeline2 .text {
-	font-family: "lyon-text";
-	display: none;
-	/* padding-top: 0.7em; */
-	/* font-size: 0.7em; */
+    font-family: "lyon-text";
+    display: none;
+    /* padding-top: 0.7em; */
+    /* font-size: 0.7em; */
 }
 
 .timeline2.middle .text,
 .timeline2.large .text {
-	display: block;
-	float: left;
-	width: 100%;
-	position: relative;
+    display: block;
+    float: left;
+    width: 100%;
+    position: relative;
 }
 
 .timeline2 .extra {
-	float: left;
-	/* display: block; */
-	font-family: "lyon-text";
-	display: none;
-	padding-top: 0.7em;
-	/* font-size: 0.8px; */
+    float: left;
+    /* display: block; */
+    font-family: "lyon-text";
+    display: none;
+    padding-top: 0.7em;
+    /* font-size: 0.8px; */
 }
 
 .timeline2.large .extra {
-	/* float: left; */
-	display: block;
+    /* float: left; */
+    display: block;
 }
