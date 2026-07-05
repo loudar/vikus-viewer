@@ -102,7 +102,7 @@ function Canvas() {
 
   var zoomedToImage = false;
   var zoomedToImageScale = 117;
-  var zoomBarrier = 2;
+  var zoomBarrier;
 
   var startTranslate = [0, 0];
   var startScale = 0;
@@ -545,6 +545,7 @@ function Canvas() {
   canvas.init = function (_data, _timeline, _config) {
     data = _data;
     config = _config;
+    zoomBarrier = config.style?.tagZoomThreshold || 2;
     timelineData = _timeline;
 
     container = d3.select(".page").append("div").classed("viz", true);
@@ -856,7 +857,7 @@ function Canvas() {
     }
 
     container.style("cursor", function () {
-      return selectedImageDistance < cursorCutoff && selectedImage.active
+      return selectedImageDistance < cursorCutoff && selectedImage && selectedImage.active
         ? "pointer"
         : "default";
     });
@@ -1368,7 +1369,7 @@ function Canvas() {
         } else if (zoomedToImage) {
           return;
         } else {
-          params.delete("ids");
+          return;
         }
         window.location.hash = params.toString().replaceAll("%2C", ",")
         userInteraction = true;
@@ -1657,21 +1658,10 @@ function Canvas() {
       }
     });
 
-    var visible = data.filter(function (d) {
-      return d.visible;
+    data.forEach(function (d) {
+      if (d.visible && d.loaded && d.active) d.alpha2 = 1;
+      else if (d.visible && !d.loaded && d.active) loadImagesCue.push(d);
     });
-
-    if (visible.length < 40) {
-      data.forEach(function (d) {
-        if (d.visible && d.loaded && d.active) d.alpha2 = 1;
-        else if (d.visible && !d.loaded && d.active) loadImagesCue.push(d);
-        else d.alpha2 = 0;
-      });
-    } else {
-      data.forEach(function (d) {
-        d.alpha2 = 0;
-      });
-    }
   }
 
   function loadMiddleImage(d) {
@@ -1683,7 +1673,13 @@ function Canvas() {
     if (config.loader.textures.detail.csv) {
       url = d[config.loader.textures.detail.csv];
     } else {
-      url = config.loader.textures.detail.url + d.id + ".jpg";
+      var baseId = d.id;
+      var pageSuffix = "";
+      if (d.imagenum && d.imagenum > 1) {
+        baseId = d.id.replace(/_\d+$/, '');
+        pageSuffix = "_" + ((d.page || 0) + 1);
+      }
+      url = config.loader.textures.detail.url + baseId + pageSuffix + ".jpg";
     }
 
     var texture = new PIXI.Texture.from(url);
@@ -1718,12 +1714,19 @@ function Canvas() {
     }
 
     state.lastZoomed = d.id;
-    var page = d.page ? "_" + d.page : "";
+    var baseId = d.id;
+    var pageSuffix = "";
+    if (d.imagenum && d.imagenum > 1) {
+      baseId = d.id.replace(/_\d+$/, '');
+      pageSuffix = "_" + ((d.page || 0) + 1);
+    } else if (d.page) {
+      pageSuffix = "_" + d.page;
+    }
     var url = "";
     if (config.loader.textures.big.csv) {
       url = d[config.loader.textures.big.csv];
     } else {
-      url = config.loader.textures.big.url + d.id + page + ".jpg";
+      url = config.loader.textures.big.url + baseId + pageSuffix + ".jpg";
     }
 
     var texture = new PIXI.Texture.from(url);

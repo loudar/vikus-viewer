@@ -1,2 +1,4 @@
-datas
-data/1024
+data
+node_modules
+.idea
+*.exe

@@ -70,8 +70,8 @@ utils.initConfig = function (config) {
 	var length = document.styleSheets[0].cssRules.length
 	document.styleSheets[0].insertRule('.close::before { background-color: ' + config.style.fontColorActive + '}', length);
 	document.styleSheets[0].insertRule('.close::after { background-color: ' + config.style.fontColorActive + '}', length);
-	document.styleSheets[0].insertRule('.tag.active { color: ' + config.style.fontColorActive + '}', length);
-	document.styleSheets[0].insertRule('.tag.active { background: ' + config.style.fontBackground + '}', length);
+	document.styleSheets[0].insertRule('.tag.active { color: ' + (config.style.tagActiveColor || config.style.fontColorActive) + '}', length);
+	document.styleSheets[0].insertRule('.tag.active { background: ' + (config.style.tagActiveBackground || config.style.fontBackground) + '}', length);
 	document.styleSheets[0].insertRule('.crossfilter .keys .item.active { color: ' + config.style.fontColorActive + '}', length);
 	document.styleSheets[0].insertRule('.crossfilter .keys .item.active { background: ' + config.style.fontBackground + '}', length);
 	document.styleSheets[0].insertRule('.crossfilter .keys .item:hover { color: ' + config.style.fontColorActive + '}', length);
@@ -137,10 +137,14 @@ utils.fullscreen = function () {
 
 utils.clean = function (data, config) {
 
+	data = data.filter(function (d) { return d.id && d.id !== "" });
+
 	data.forEach(function (d, i) {
 		d.search = Object.keys(d).map(function (e) { return d[e] }).join(' - ').toUpperCase()
 		d.i = i;
-		d.keywords = _(d.keywords || "None")
+		if (d.id) d.id = d.id.normalize('NFD');
+		var kw = (d.keywords || "None").trim().replace(/^"+|"+$/g, '');
+		d.keywords = _(kw)
 			.chain()
 			.split(config.delimiter || ",")
 			.map(_.trim)

@@ -146,7 +146,7 @@ function init() {
           .finished(function () {
             canvas.onhashchange();
           })
-          .load(makeUrl(baseUrl.path, config.loader.textures.medium.url));
+          .load(makeUrl(baseUrl.path, config.loader.textures.preview));
       });
     });
   });
