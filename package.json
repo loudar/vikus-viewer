@@ -1,0 +1,13 @@
+{
+  "name": "vikus-viewer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VIKUS Viewer - a web-based visualization system for cultural artifact collections",
+  "scripts": {
+    "start": "bun run server.ts",
+    "compile": "bun build --compile --target=bun-windows-x64 --minify --outfile \"vikus-viewer.exe\" server.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.14"
+  }
+}
