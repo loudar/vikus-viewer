@@ -1675,9 +1675,11 @@ function Canvas() {
     } else {
       var baseId = d.id;
       var pageSuffix = "";
-      if (d.imagenum && d.imagenum > 1) {
+      if (/_\d+$/.test(d.id)) {
         baseId = d.id.replace(/_\d+$/, '');
-        pageSuffix = "_" + ((d.page || 0) + 1);
+        if (d.imagenum && d.imagenum > 1) {
+          pageSuffix = "_" + ((d.page || 0) + 1);
+        }
       }
       url = config.loader.textures.detail.url + baseId + pageSuffix + ".jpg";
     }
@@ -1716,9 +1718,13 @@ function Canvas() {
     state.lastZoomed = d.id;
     var baseId = d.id;
     var pageSuffix = "";
-    if (d.imagenum && d.imagenum > 1) {
+    if (/_\d+$/.test(d.id)) {
       baseId = d.id.replace(/_\d+$/, '');
-      pageSuffix = "_" + ((d.page || 0) + 1);
+      if (d.imagenum && d.imagenum > 1) {
+        pageSuffix = "_" + ((d.page || 0) + 1);
+      } else if (d.page) {
+        pageSuffix = "_" + d.page;
+      }
     } else if (d.page) {
       pageSuffix = "_" + d.page;
     }

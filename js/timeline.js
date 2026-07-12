@@ -26,6 +26,11 @@ function Timeline() {
 
   timeline.init = function (_timeDomain) {
     timeDomain = _timeDomain;
+
+    var cfg = (utils.config.style || {});
+    fontScaleYear.range(cfg.timelineYearFontSize || [7, 20]);
+    timelineFontScale.range(cfg.timelineAnnotationFontSize || [2, 10]);
+
     if (!d3.select(".timeline").empty()) {
       d3.select(".timeline").remove();
     }

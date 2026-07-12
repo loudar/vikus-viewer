@@ -69,8 +69,12 @@ function Tags() {
   tags.filter = function(filterWords,highlight){
     data.forEach(function(d) {
       var search = state.search !== "" ? d.search.indexOf(state.search) > -1 : true
+      var kw = d.keywords;
+      if (!Array.isArray(kw)) {
+        kw = typeof kw === 'string' ? kw.split(',').map(function(s){ return s.trim(); }) : [];
+      }
       var matches = filterWords.filter(function(word){
-        return d.keywords.indexOf(word) > -1;
+        return kw.indexOf(word) > -1;
       });
       if(highlight) d.highlight = (matches.length == filterWords.length && search);
       else d.active = (matches.length == filterWords.length && search);
@@ -93,8 +97,12 @@ function Tags() {
     // var topographisch = [];
     data.forEach(function(d) {
       if(d.active){
-        d.keywords.forEach(function(keyword) {
-          keywords.push({ keyword: keyword, data: d });
+        var kw = d.keywords;
+        if (!Array.isArray(kw)) {
+          kw = typeof kw === 'string' ? kw.split(',') : [];
+        }
+        kw.forEach(function(keyword) {
+          keywords.push({ keyword: keyword.trim(), data: d });
         })
       }
     });

@@ -128,6 +128,14 @@ function init() {
               idToItemsMap.set(d.id, []);
             }
             idToItemsMap.get(d.id).push(d);
+            // Also index by base ID (without page suffix) for sprite texture matching
+            var baseId = d.id.replace(/_\d+$/, '');
+            if (baseId !== d.id) {
+              if (!idToItemsMap.has(baseId)) {
+                idToItemsMap.set(baseId, []);
+              }
+              idToItemsMap.get(baseId).push(d);
+            }
           }
         });
 
